@@ -31,6 +31,7 @@
 #ifndef PROJECT_MANAGER_H
 #define PROJECT_MANAGER_H
 
+#include "editor/editor_help_search.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/scroll_container.h"
 
@@ -85,6 +86,7 @@ class ProjectManager : public Control {
 	Button *title_bar_logo = nullptr;
 	HBoxContainer *main_view_toggles = nullptr;
 	Button *quick_settings_button = nullptr;
+	Button *help_search = nullptr;
 
 	enum MainViewTab {
 		MAIN_VIEW_PROJECTS,
@@ -122,6 +124,12 @@ class ProjectManager : public Control {
 
 	void _show_quick_settings();
 	void _restart_confirmed();
+
+	// Help search.
+
+	EditorHelpSearch *help_search_dialog = nullptr;
+
+	void _help_search();
 
 	// Project list.
 

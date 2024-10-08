@@ -244,6 +244,7 @@ void ProjectManager::_update_theme(bool p_skip_creation) {
 			// Top bar.
 			search_box->set_right_icon(get_editor_theme_icon(SNAME("Search")));
 			quick_settings_button->set_icon(get_editor_theme_icon(SNAME("Tools")));
+			help_search->set_icon(get_editor_theme_icon(SNAME("HelpSearch")));
 
 			// Sidebar.
 			create_btn->set_icon(get_editor_theme_icon(SNAME("Add")));
@@ -396,6 +397,10 @@ void ProjectManager::_restart_confirmed() {
 
 	_dim_window();
 	get_tree()->quit();
+}
+
+void ProjectManager::_help_search() {
+	help_search_dialog->popup_dialog();
 }
 
 // Project list.
@@ -1233,6 +1238,14 @@ ProjectManager::ProjectManager() {
 		right_hbox->add_child(quick_settings_button);
 		quick_settings_button->connect(SceneStringName(pressed), callable_mp(this, &ProjectManager::_show_quick_settings));
 
+		//TODO: Move this block to the single function
+		help_search = memnew(Button);
+		help_search->set_flat(true);
+		help_search->set_text(TTR("Search Help"));
+		right_hbox->add_child(help_search);
+		help_search->set_tooltip_text(TTR("Search the reference documentation."));
+		help_search->connect(SceneStringName(pressed), callable_mp(this, &ProjectManager::_help_search));
+
 		if (can_expand) {
 			// Add spacer to avoid other controls under the window minimize/maximize/close buttons (right side).
 			right_menu_spacer = memnew(Control);
@@ -1464,6 +1477,9 @@ ProjectManager::ProjectManager() {
 		quick_settings_dialog = memnew(QuickSettingsDialog);
 		add_child(quick_settings_dialog);
 		quick_settings_dialog->connect("restart_required", callable_mp(this, &ProjectManager::_restart_confirmed));
+
+		help_search_dialog = memnew(EditorHelpSearch);
+		add_child(help_search_dialog);
 
 		scan_dir = memnew(EditorFileDialog);
 		scan_dir->set_previews_enabled(false);
